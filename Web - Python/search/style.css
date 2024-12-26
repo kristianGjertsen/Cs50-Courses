@@ -1,0 +1,77 @@
+body {
+    background-color: rgb(43, 43, 45);
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    height: 10%;
+}
+
+.form_cont {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    height: 80vh;
+}
+
+input {
+    border-radius: 8px;
+    border: 2px solid black;
+    font-size: 20px;
+}
+
+a {
+    color: white;
+}
+
+.sub_btn {
+    background-color: rgb(63, 143, 218);
+    border: 2px solid black;
+    color: white;
+    height: 30px;
+    width: 200px;
+}
+.li_btn{
+    background-color: gray;
+    border: solid 2px black;
+    border-radius: 8px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Standard Search css*/
+.std_search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#inp_search {
+    width: 400px;
+    height: 40px;
+}
+
+/* Advanced Search css*/
+.adv_form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.adv_in{
+    width: 33%;
+}
