@@ -1,0 +1,17 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+Add new wiki page
+{% endblock %}
+
+{% block body %}
+<h2>Create New Wiki Page</h2>
+<form action="{% url 'add' %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="title" placeholder="Title of new page"><br><br><br>
+    <textarea name="text" placeholder="Enter your text here..."></textarea><br>
+    <input type="submit" value="Save">
+
+</form>
+
+{% endblock %}
