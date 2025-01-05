@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block body %}
+
+{% if filters %}
+<h3>Filters</h3>
+<form action="{% url 'index' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="val" value="filter">
+    Activation status:
+    <select name="active_status" id="">
+        <option value="active">Open</option>
+        <option value="unactive">Closed</option>
+        <option value="both">Both</option>
+
+    </select>
+    Categories: <select name="category" id="">
+        <!--For loop on all categoryes-->
+        {% for cat in categories %}
+        <option value="{{cat}}">{{cat}}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" value="Apply Filters">
+</form>
+{% endif %}
+<h2>{{sorted_name}}</h2>
+<div class="cont">
+    {% for l in listings %}
+    <div class="listing" onclick="window.location.href='{% url 'listing' l.id %}';">
+        <h2>{{l.name}}</h2>
+        <!-- Needs to add link to page -->
+        {%if l.img_url %}
+        <img src="{{ l.img_url }}" alt="Listing is provided with no image"
+            onerror="this.onerror=null;this.src='{% static 'auctions/noimg.jpg' %}';">
+        {% else %}
+        <img src="{% static 'auctions/noimg.jpg' %}" alt="tf" srcset="">
+        {% endif %}
+        <h4>{{l.description}}</h4>
+        <h3>Current Bid: {{l.current_bid}} $</h3>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

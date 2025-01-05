@@ -1,0 +1,105 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="single_list">
+    <h1>{{listing.name}}</h1>
+
+    {%if listing.img_url %}
+    <img src="{{ listing.img_url }}" alt="Listing is provided with no image"
+        onerror="this.onerror=null;this.src='{% static 'auctions/noimg.jpg' %}';">
+    {% else %}
+    <img src="{% static 'auctions/noimg.jpg' %}" alt="tf" srcset="">
+    {% endif %}
+
+    <div class="under_img">
+        <!-- Description -->
+        <div class="over_com">
+            <div class="price">
+                <h5>{{ listing.description }}</h5>
+                <h3>{{ listing.current_bid }}$</h3>
+                {% if bid_won == True %}
+                <h3 class="green">You won the bid!</h3>
+                {% elif bid_won == False %}
+                <h3><span class="error">You did not win the bid </span></h3>
+                {% endif %}
+                <p>{{listing.num_bid}} bid(s) so far.
+                    {% if login_user_id == listing.user_bid.id %}
+                    <br><span class="green">Your bid is the current bid.</span>
+                    {% endif %}
+                </p>
+
+                {% if error_msg %}
+                <h5 class="error">{{error_msg}}</h5>
+                {% endif %}
+
+                <!-- Bidding -->
+                {% if user.is_authenticated and listing.user.id != login_user_id %}
+                <form action="{% url 'listing' listing.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="number" name="bid" step="any" placeholder="Bid...">
+                    <input class="s_button" type="submit" value="Place Bid">
+                </form>
+                {% endif %}
+            </div>
+
+            <div class="details">
+                {% if user.is_authenticated %}
+                {% if listing.user.id != login_user_id %}
+                <!-- Watchlist -->
+                {% if watchlisted == False%}
+                <form action="{% url 'watchlist' listing.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="val" value="add">
+                    <input class="s_button" type="submit" value="Add to watchlist">
+                </form>
+                {%else%}
+                <form action="{% url 'watchlist' listing.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="val" value="remove">
+                    <input class="s_button" type="submit" value="Remove from wacthlist">
+                </form>
+                {% endif %}
+
+                {% else %}
+                <!-- Close listing -->
+                <form action="{% url 'close' listing.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{login_user_id}}">
+                    <input class="s_button" type="submit" value="Close Listing">
+                </form>
+                {% endif %}
+                {% endif %}
+
+                <h4>Listed by: {{ listing.user }}</h4>
+                <h4>Category: {{ listing.category }}</h4>
+            </div>
+        </div>
+        <!--ADD for loop for å legge til kommentarer -->
+
+        <br><br>
+
+        <div class="comments">
+            <h3>Comments</h3>
+            {% if user.is_authenticated %}
+
+            <form action="{% url 'comment' listing.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{login_user_id}}">
+                <input type="text" name="comment" id="" value="" placeholder="Write a comment...">
+                <input class="s_button" type="submit" name="submit" value="comment">
+
+            </form>
+            {% endif %}
+            <br>
+            <table class="table">
+                {% for comment in comments %}
+                <tr>
+                    <td class="comment">{{comment.username}}: {{comment.text}}</td>
+                </tr>
+                {%endfor%}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
